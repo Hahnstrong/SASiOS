@@ -37,7 +37,13 @@ class UserController {
     static func postUserToFirebase(user: User, completion: @escaping(Bool) -> Void) {
         
         guard let baseURL = baseURL else { completion(false); return }
-        let url = baseURL.appending
+        let userID = user.userID
+        
+        let url = baseURL.appendingPathComponent("users").appendingPathComponent(userID).appendingPathExtension("json")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = 
         
         
     }

@@ -10,6 +10,17 @@ import Foundation
 
 class User {
     
+    // MARK: - Dictionary Keys
+    
+    private let nameKey = "name"
+    private let addressKey = "address"
+    private let phoneNumberKey = "phoneNumber"
+    private let emailKey = "email"
+    private let gateCodeKey = "gateCode"
+    private let vehiclesKey = "vehicles"
+    
+    // MARK: - Properties
+    
     var userID: String
     var name: String?
     var address: String?
@@ -27,4 +38,12 @@ class User {
         self.gateCode = gateCode
         self.vehicle = vehicle
     }
+    
+    init?(dictionary: [String: Any]) {
+        guard let name = dictionary[nameKey] as? String,
+            let address = dictionary[addressKey] as? String,
+            let phoneNumber = dictionary[phoneNumberKey] as? String,
+            let emailKey = dictionary[
+    }
+    
 }
