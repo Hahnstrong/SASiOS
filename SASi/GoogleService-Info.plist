@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>194278220240-1ugq8l5a0omrkotov25jiqdevhb5c1rg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.194278220240-1ugq8l5a0omrkotov25jiqdevhb5c1rg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC-2fJacSBJZ5DjJpHU-Jaenop16NaM_hE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>194278220240</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.calebstrong.SASi</string>
+	<key>PROJECT_ID</key>
+	<string>sasi-ios</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sasi-ios.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:194278220240:ios:491d4b6cc4136200</string>
+	<key>DATABASE_URL</key>
+	<string>https://sasi-ios.firebaseio.com</string>
+</dict>
+</plist>
