@@ -21,6 +21,7 @@
 		630A29B21F547FD500198791 /* ServiceListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A29B11F547FD500198791 /* ServiceListTableViewController.swift */; };
 		630A29B41F54899700198791 /* VehicleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A29B31F54899700198791 /* VehicleController.swift */; };
 		630A29B61F54899D00198791 /* ServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630A29B51F54899D00198791 /* ServiceController.swift */; };
+		63AB42C61F55D8C3001E4878 /* ServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AB42C51F55D8C3001E4878 /* ServiceTableViewCell.swift */; };
 		95F2BBC5F5300EA4AEAC28FD /* Pods_SASi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 567C238EA4B4599986845F7B /* Pods_SASi.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 		630A29B11F547FD500198791 /* ServiceListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceListTableViewController.swift; sourceTree = "<group>"; };
 		630A29B31F54899700198791 /* VehicleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VehicleController.swift; sourceTree = "<group>"; };
 		630A29B51F54899D00198791 /* ServiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceController.swift; sourceTree = "<group>"; };
+		63AB42C51F55D8C3001E4878 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
 		D58D1DCF6915C8041DBE57A2 /* Pods-SASi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SASi.release.xcconfig"; path = "Pods/Target Support Files/Pods-SASi/Pods-SASi.release.xcconfig"; sourceTree = "<group>"; };
 		DEC9348CEF3D4087F4DB5B15 /* Pods-SASi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SASi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SASi/Pods-SASi.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,6 +114,7 @@
 			children = (
 				630A298E1F54685700198791 /* Main.storyboard */,
 				630A29931F54685700198791 /* LaunchScreen.storyboard */,
+				63AB42C51F55D8C3001E4878 /* ServiceTableViewCell.swift */,
 			);
 			name = Storyboard;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				630A29A61F546F2100198791 /* User.swift in Sources */,
 				630A29A41F546F1800198791 /* Vehicle.swift in Sources */,
 				630A29B41F54899700198791 /* VehicleController.swift in Sources */,
+				63AB42C61F55D8C3001E4878 /* ServiceTableViewCell.swift in Sources */,
 				630A29B21F547FD500198791 /* ServiceListTableViewController.swift in Sources */,
 				630A29AA1F5477C400198791 /* UserController.swift in Sources */,
 				630A298B1F54685700198791 /* AppDelegate.swift in Sources */,

@@ -17,33 +17,67 @@ class User {
     private let phoneNumberKey = "phoneNumber"
     private let emailKey = "email"
     private let gateCodeKey = "gateCode"
-    private let vehiclesKey = "vehicles"
     
     // MARK: - Properties
     
-    var userID: String
     var name: String?
     var address: String?
-    var phoneNumer: String?
+    var phoneNumber: String?
     var email: String
     var gateCode: String?
-    var vehicle: Vehicle?
     
-    init(userID: String, name: String? = nil, address: String? = nil, phoneNumer: String? = nil, email: String, gateCode: String? = nil, vehicle: Vehicle? = nil) {
-        self.userID = userID
+    init(name: String? = nil, address: String? = nil, phoneNumber: String? = nil, email: String, gateCode: String? = nil) {
+        
         self.name = name
         self.address = address
-        self.phoneNumer = phoneNumer
+        self.phoneNumber = phoneNumber
         self.email = email
         self.gateCode = gateCode
-        self.vehicle = vehicle
     }
     
     init?(dictionary: [String: Any]) {
         guard let name = dictionary[nameKey] as? String,
             let address = dictionary[addressKey] as? String,
             let phoneNumber = dictionary[phoneNumberKey] as? String,
-            let emailKey = dictionary[
+            let email = dictionary[emailKey] as? String,
+            let gateCode = dictionary[gateCodeKey] as? String else { return nil }
+        
+        self.name = name
+        self.address = address
+        self.phoneNumber = phoneNumber
+        self.email = email
+        self.gateCode = gateCode
     }
     
+    var dictionaryRepresentation: [String: Any] {
+        return [nameKey: name as Any, addressKey: address as Any, phoneNumberKey: phoneNumber as Any, emailKey: email, gateCodeKey: gateCode as Any]
+    }
+    
+    var jsonData: Data? {
+        return try? JSONSerialization.data(withJSONObject: dictionaryRepresentation, options: .prettyPrinted)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

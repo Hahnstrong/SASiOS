@@ -30,6 +30,11 @@ class LoginViewController: UIViewController {
             let password = passwordTextField.text else { return }
         
         if segmentControl.selectedSegmentIndex == 1 {
+            
+            loginButton.titleLabel?.text = "Signup"
+            
+            // Create User
+            
             Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
                 if user != nil {
                     self.createUserAlert()
@@ -40,9 +45,17 @@ class LoginViewController: UIViewController {
         }
             
         else {
+            
+            // Signin User
+            
             Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                 if user != nil {
-                    self.performSegue(withIdentifier: "ToVehicleList", sender: self)
+                    
+                    UserController.shared.fetchUserFromFirebase(completion: {
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "ToVehicleList", sender: self)
+                        }
+                    })
                 } else {
                     print("Error: \(String(describing: error))")
                 }
@@ -88,6 +101,11 @@ class LoginViewController: UIViewController {
                 let gateCode = gateCodeTextField?.text else { return }
             
             UserController.shared.createUser(name: name, address: address, phoneNumber: phoneNumber, gateCode: gateCode)
+            let user = UserController.shared.user
+            UserController.shared.putUserToFirebase(user: user, completion: { (success) in
+                if success {
+                }
+            })
             self.performSegue(withIdentifier: "ToVehicleList", sender: self)
         }
         
@@ -95,8 +113,6 @@ class LoginViewController: UIViewController {
         createUserAlert.addAction(createAction)
         
         present(createUserAlert, animated: true, completion: nil)
-
-        
     }
     
     // MARK: - Navigation

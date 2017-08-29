@@ -9,16 +9,43 @@
 import UIKit
 
 class ServiceTableViewCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var serviceNameLabel: UILabel!
+    @IBOutlet weak var servicePriceLabel: UILabel!
+    @IBOutlet weak var serviceChosenButton: UIButton!
+    
+    // MARK: - Actions
+    
+    @IBAction func serviceIsChosenButtonTapped(_ sender: Any) {
+        delegate?.serviceWasSelected(cell: self)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    // MARK: - Properties and UpdateView
+    
+    var service: Service? {
+        didSet {
+            updateView()
+        }
     }
+    
+    func updateView() {
+        guard let service = service else { return }
+        
+        serviceNameLabel.text = service.serviceName
+        servicePriceLabel.text = "$\(service.servicePrice)"
+        let image = service.serviceIsChosen ? #imageLiteral(resourceName: "complete") : #imageLiteral(resourceName: "incomplete")
+        serviceChosenButton.setImage(image, for: .normal)
+    }
+    
+    // MARK: - Delegate
+    
+    weak var delegate: ServiceTableViewCellDelegate?
+}
 
+// MARK: - Delegate Protocol
+
+protocol ServiceTableViewCellDelegate: class {
+    func serviceWasSelected(cell: ServiceTableViewCell)
 }
