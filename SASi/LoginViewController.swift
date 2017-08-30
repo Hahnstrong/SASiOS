@@ -11,8 +11,15 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "background")
+        self.view.insertSubview(backgroundImage, at: 0)
     }
     
     // MARK: - IBOutlets
@@ -36,10 +43,12 @@ class LoginViewController: UIViewController {
             // Create User
             
             Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                
                 if user != nil {
                     self.createUserAlert()
                 } else {
-                    print("Error: \(String(describing: error))")
+                    guard let error = error else { return }
+                    self.signInErrorAlert(error: error)
                 }
             }
         }
@@ -49,15 +58,16 @@ class LoginViewController: UIViewController {
             // Signin User
             
             Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+                
                 if user != nil {
-                    
                     UserController.shared.fetchUserFromFirebase(completion: {
                         DispatchQueue.main.async {
                             self.performSegue(withIdentifier: "ToVehicleList", sender: self)
                         }
                     })
                 } else {
-                    print("Error: \(String(describing: error))")
+                    guard let error = error else { return }
+                    self.signInErrorAlert(error: error)
                 }
             }
         }
@@ -113,6 +123,15 @@ class LoginViewController: UIViewController {
         createUserAlert.addAction(createAction)
         
         present(createUserAlert, animated: true, completion: nil)
+    }
+    
+    func signInErrorAlert(error: Error) {
+        let signInErrorAlertController = UIAlertController(title: "Error", message: "\(error.localizedDescription)", preferredStyle: .alert)
+        
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        signInErrorAlertController.addAction(cancelButton)
+        
+        present(signInErrorAlertController, animated: true, completion: nil)
     }
     
     // MARK: - Navigation

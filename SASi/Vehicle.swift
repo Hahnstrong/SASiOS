@@ -17,6 +17,7 @@ class Vehicle {
     private let modelKey = "model"
     private let prefFuelTypeKey = "prefFuelType"
     private let prefOilTypeKey = "prefOilType"
+    private let vehicleUUIDKey = "vehicleUUID"
     
     // MARK: - Properties
     
@@ -25,13 +26,15 @@ class Vehicle {
     let model: String
     let prefFuelType: String
     let prefOilType: String
+    let vehicleUUID: String
     
-    init(year: String, make: String, model: String, prefFuelType: String, prefOilType: String) {
+    init(year: String, make: String, model: String, prefFuelType: String, prefOilType: String, vehicleUUID: String) {
         self.year = year
         self.make = make
         self.model = model
         self.prefFuelType = prefFuelType
         self.prefOilType = prefOilType
+        self.vehicleUUID = vehicleUUID
     }
     
     init?(dictionary: [String: Any]) {
@@ -39,17 +42,19 @@ class Vehicle {
             let make = dictionary[makeKey] as? String,
             let model = dictionary[modelKey] as? String,
             let prefFuelType = dictionary[prefFuelTypeKey] as? String,
-            let prefOilType = dictionary[prefOilTypeKey] as? String else { return nil }
+            let prefOilType = dictionary[prefOilTypeKey] as? String,
+            let vehicleUUID = dictionary[vehicleUUIDKey] as? String else { return nil }
         
         self.year = year
         self.make = make
         self.model = model
         self.prefFuelType = prefFuelType
         self.prefOilType = prefOilType
+        self.vehicleUUID = vehicleUUID
     }
     
     var dictionaryRepresentation: [String: Any] {
-        return [yearKey: year, makeKey: make, modelKey: model, prefFuelTypeKey: prefFuelType, prefOilTypeKey: prefOilType]
+        return [yearKey: year, makeKey: make, modelKey: model, prefFuelTypeKey: prefFuelType, prefOilTypeKey: prefOilType, vehicleUUIDKey: vehicleUUID]
     }
     
     var jsonData: Data? {
