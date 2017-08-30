@@ -70,7 +70,7 @@ class VehicleController {
         dataTask.resume()
     }
 
-    // POST
+    // PUT
     
     func putVehicleToFirebase(vehicle: Vehicle, completion: @escaping(Bool) -> Void) {
     
@@ -143,6 +143,8 @@ class VehicleController {
         
         dataTask.resume()
     }
+    
+    // DELETE
     
     func deleteVehicleFromFirebase(vehicle: Vehicle, completion: @escaping(Bool) -> Void) {
         

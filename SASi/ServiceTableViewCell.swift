@@ -15,6 +15,7 @@ class ServiceTableViewCell: UITableViewCell {
     @IBOutlet weak var serviceNameLabel: UILabel!
     @IBOutlet weak var servicePriceLabel: UILabel!
     @IBOutlet weak var serviceChosenButton: UIButton!
+    @IBOutlet weak var serviceView: UIView!
     
     // MARK: - Actions
     
