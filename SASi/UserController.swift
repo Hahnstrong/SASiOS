@@ -16,13 +16,22 @@ class UserController {
     static let shared = UserController()
     var user: User = User(email: "")
     let baseURL = URL(string: "https://sasi-ios.firebaseio.com/")
-    let userID = Auth.auth().currentUser?.uid
+    var userID = Auth.auth().currentUser?.uid
     
     // MARK: - CRUD Functions
     
-    func createUser(name: String, address: String, phoneNumber: String, gateCode: String) {
+    func createUserWithEmail() {
         guard let email = Auth.auth().currentUser?.email else { return }
-        user = User(name: name, address: address, phoneNumber: phoneNumber, email: email, gateCode: gateCode)
+        user = User(name: "", address: "", phoneNumber: "", email: email, gateCode: "")
+        putUserToFirebase(user: user) { (success) in
+        }
+    }
+    
+    func createUserWithPhone() {
+        guard let phoneNumber = Auth.auth().currentUser?.phoneNumber else { return }
+        user = User(name: "", address: "", phoneNumber: phoneNumber, email: "", gateCode: "")
+        putUserToFirebase(user: user) { (success) in
+        }
     }
     
     // MARK: - Firebase API Calls
@@ -89,7 +98,7 @@ class UserController {
                 completion(false)
                 return
             } else {
-                UserController.shared.user = user
+                self.user = user
                 completion(true)
                 return
             }
@@ -126,7 +135,7 @@ class UserController {
                 completion(false)
                 return
             } else {
-                UserController.shared.user = user
+                self.user = user
                 completion(true)
                 return
             }

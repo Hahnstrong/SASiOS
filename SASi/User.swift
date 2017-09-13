@@ -23,10 +23,10 @@ class User {
     var name: String?
     var address: String?
     var phoneNumber: String?
-    var email: String
+    var email: String?
     var gateCode: String?
     
-    init(name: String? = nil, address: String? = nil, phoneNumber: String? = nil, email: String, gateCode: String? = nil) {
+    init(name: String? = nil, address: String? = nil, phoneNumber: String? = nil, email: String?, gateCode: String? = nil) {
         
         self.name = name
         self.address = address
@@ -50,7 +50,7 @@ class User {
     }
     
     var dictionaryRepresentation: [String: Any] {
-        return [nameKey: name as Any, addressKey: address as Any, phoneNumberKey: phoneNumber as Any, emailKey: email, gateCodeKey: gateCode as Any]
+        return [nameKey: name as Any, addressKey: address as Any, phoneNumberKey: phoneNumber as Any, emailKey: email as Any, gateCodeKey: gateCode as Any]
     }
     
     var jsonData: Data? {

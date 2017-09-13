@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class VehicleListTableViewController: UITableViewController {
     
@@ -17,8 +18,15 @@ class VehicleListTableViewController: UITableViewController {
     // MARK: - IBOutlets
     
     @IBOutlet weak var personalInfoButton: UIButton!
+    @IBOutlet weak var addVehicleButton: UIButton!
     
     // MARK: - IBActions
+    
+    @IBAction func backArrow(_ sender: Any) {
+//        try! Auth.auth().signOut()
+//        UserDefaults.standard.removeObject(forKey: "user_uid_key")
+        self.navigationController?.popViewController(animated: true)
+    }
     
     @IBAction func personalInfoButtonTapped(_ sender: Any) {
         updateUserInfoAlert()
@@ -41,6 +49,7 @@ class VehicleListTableViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         personalInfoButton.layer.cornerRadius = 8
+        addVehicleButton.layer.cornerRadius = 8
         
         let backgroundImage = UIImage(named: "background")
         let imageView = UIImageView(image: backgroundImage)
@@ -109,6 +118,7 @@ class VehicleListTableViewController: UITableViewController {
         var addressTextField: UITextField?
         var phoneNumberTextField: UITextField?
         var gateCodeTextField: UITextField?
+        var emailTextField: UITextField?
         
         updateUserAlert.addTextField { (nameField) in
             nameField.placeholder = "Enter your name here..."
@@ -134,17 +144,25 @@ class VehicleListTableViewController: UITableViewController {
             gateCodeTextField = gateCodeField
         }
         
+        updateUserAlert.addTextField { (emailField) in
+            emailField.placeholder = "Enter your email here..."
+            emailField.text = self.user.email
+            emailTextField = emailField
+        }
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            guard let name = nameTextField?.text, name != "",
-                let address = addressTextField?.text, address != "",
-                let phoneNumber = phoneNumberTextField?.text, phoneNumber != "",
-                let gateCode = gateCodeTextField?.text else { return }
+            guard let name = nameTextField?.text,
+                let address = addressTextField?.text,
+                let phoneNumber = phoneNumberTextField?.text,
+                let gateCode = gateCodeTextField?.text,
+                let email = emailTextField?.text else { return }
             
             self.user.name = name
             self.user.address = address
             self.user.phoneNumber = phoneNumber
             self.user.gateCode = gateCode
+            self.user.email = email
             
             UserController.shared.patchUserToFirebase(user: self.user, completion: { (success) in
             })
