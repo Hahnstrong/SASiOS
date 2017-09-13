@@ -24,11 +24,11 @@ class Vehicle {
     let year: String
     let make: String
     let model: String
-    let prefFuelType: String
-    let prefOilType: String
+    let prefFuelType: String?
+    let prefOilType: String?
     let vehicleUUID: String
     
-    init(year: String, make: String, model: String, prefFuelType: String, prefOilType: String, vehicleUUID: String) {
+    init(year: String, make: String, model: String, prefFuelType: String?, prefOilType: String?, vehicleUUID: String) {
         self.year = year
         self.make = make
         self.model = model
@@ -54,7 +54,7 @@ class Vehicle {
     }
     
     var dictionaryRepresentation: [String: Any] {
-        return [yearKey: year, makeKey: make, modelKey: model, prefFuelTypeKey: prefFuelType, prefOilTypeKey: prefOilType, vehicleUUIDKey: vehicleUUID]
+        return [yearKey: year, makeKey: make, modelKey: model, prefFuelTypeKey: prefFuelType as Any, prefOilTypeKey: prefOilType as Any, vehicleUUIDKey: vehicleUUID]
     }
     
     var jsonData: Data? {

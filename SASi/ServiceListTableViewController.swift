@@ -59,7 +59,15 @@ class ServiceListTableViewController: UITableViewController, ServiceTableViewCel
     @IBAction func placeOrderButtonTapped(_ sender: Any) {
         
         if user.address == "" || user.email == "" || user.name == "" || user.gateCode == "" || user.phoneNumber == "" {
-            self.updateUserInfoAlert()
+            
+            let missingInfoAlert = UIAlertController(title: "Please fill in all fields", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (UIAlertAction) in
+                self.performSegue(withIdentifier: "ToPersonalInfoView", sender: self)
+            })
+            missingInfoAlert.addAction(cancelAction)
+            missingInfoAlert.addAction(okayAction)
+            present(missingInfoAlert, animated: true, completion: nil)
         } else if buttonArray == [] {
             let noDaySelectedAlert = UIAlertController(title: "Please Select a Day", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
@@ -157,76 +165,6 @@ class ServiceListTableViewController: UITableViewController, ServiceTableViewCel
         ServiceController.shared.updateService(service: service, serviceIsChosen: willBeChosen)
         
         cell.service = service
-    }
-    
-    // MARK: - Alerts
-    
-    func updateUserInfoAlert() {
-        let updateUserAlert = UIAlertController(title: "Please fill in all spaces", message: nil, preferredStyle: .alert)
-        
-        var nameTextField: UITextField?
-        var addressTextField: UITextField?
-        var phoneNumberTextField: UITextField?
-        var gateCodeTextField: UITextField?
-        var emailTextField: UITextField?
-        
-        updateUserAlert.addTextField { (nameField) in
-            nameField.placeholder = "Enter your name here..."
-            nameField.text = self.user.name
-            nameTextField = nameField
-        }
-        
-        updateUserAlert.addTextField { (addressField) in
-            addressField.placeholder = "Enter your address here..."
-            addressField.text = self.user.address
-            addressTextField = addressField
-        }
-        
-        updateUserAlert.addTextField { (phoneNumberField) in
-            phoneNumberField.placeholder = "Enter your phone number here..."
-            phoneNumberField.text = self.user.phoneNumber
-            phoneNumberTextField = phoneNumberField
-        }
-        
-        updateUserAlert.addTextField { (gateCodeField) in
-            gateCodeField.placeholder = "Enter your gate code here..."
-            gateCodeField.text = self.user.gateCode
-            gateCodeTextField = gateCodeField
-        }
-        
-        updateUserAlert.addTextField { (emailField) in
-            emailField.placeholder = "Enter your email here..."
-            emailField.text = self.user.email
-            emailTextField = emailField
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            guard let name = nameTextField?.text, name != "",
-                let address = addressTextField?.text, address != "",
-                let phoneNumber = phoneNumberTextField?.text, phoneNumber != "",
-                let gateCode = gateCodeTextField?.text,
-                let email = emailTextField?.text, email != "" else { return }
-            
-            self.user.name = name
-            self.user.address = address
-            self.user.phoneNumber = phoneNumber
-            self.user.gateCode = gateCode
-            self.user.email = email
-            
-            UserController.shared.patchUserToFirebase(user: self.user, completion: { (success) in
-            })
-            
-            let mailComposeViewController = self.configuredMailComposeViewController()
-            if MFMailComposeViewController.canSendMail() {
-                self.present(mailComposeViewController, animated: true, completion: nil)
-            }
-        }
-        
-        updateUserAlert.addAction(cancelAction)
-        updateUserAlert.addAction(saveAction)
-        
-        present(updateUserAlert, animated: true, completion: nil)
     }
     
     // MARK: - Email Controller

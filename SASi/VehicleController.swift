@@ -25,11 +25,15 @@ class VehicleController {
         let vehicle = Vehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID)
         vehicles.append(vehicle)
         self.vehicle = vehicle
+        putVehicleToFirebase(vehicle: vehicle) { (success) in
+        }
     }
     
     func updateVehicle(year: String, make: String, model: String, prefFuelType: String, prefOilType: String, vehicleUUID: String) {
         let vehicle = Vehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID)
         self.vehicle = vehicle
+        patchVehicleToFirebase(vehicle: vehicle) { (success) in
+        }
     }
     
     // MARK: - Firebase API Calls

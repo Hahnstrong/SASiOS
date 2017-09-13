@@ -29,23 +29,25 @@ class VehicleListTableViewController: UITableViewController {
     }
     
     @IBAction func personalInfoButtonTapped(_ sender: Any) {
-        updateUserInfoAlert()
+        self.performSegue(withIdentifier: "ToPersonalInfoView", sender: self)
     }
     
     @IBAction func addVehicleButtonTapped(_ sender: Any) {
-        createVehicleAlert()
+        self.performSegue(withIdentifier: "ToVehicleInfoView", sender: self)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         VehicleController.shared.fetchVehiclesFromFirebase {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        
         tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         personalInfoButton.layer.cornerRadius = 8
@@ -92,222 +94,19 @@ class VehicleListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vehicle = VehicleController.shared.vehicles[indexPath.row]
-        updateVehicleAlert(vehicle: vehicle)
+        self.performSegue(withIdentifier: "ToVehicleInfoView", sender: self)
     }
 
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ToServiceView" {
-            if let destinationViewController = segue.destination as? ServiceListTableViewController {
+        if segue.identifier == "ToVehicleInfoView" {
+            if let destinationViewController = segue.destination as? VehicleInfoViewController {
                 if let indexPath = tableView.indexPathForSelectedRow {
                     let vehicle = VehicleController.shared.vehicles[indexPath.row]
                     destinationViewController.vehicle = vehicle
                 }
             }
         }
-    }
-    
-    // MARK: - Alerts
-    
-    func updateUserInfoAlert() {
-        let updateUserAlert = UIAlertController(title: "Your user info", message: nil, preferredStyle: .alert)
-        
-        var nameTextField: UITextField?
-        var addressTextField: UITextField?
-        var phoneNumberTextField: UITextField?
-        var gateCodeTextField: UITextField?
-        var emailTextField: UITextField?
-        
-        updateUserAlert.addTextField { (nameField) in
-            nameField.placeholder = "Enter your name here..."
-            nameField.text = self.user.name
-            nameTextField = nameField
-        }
-        
-        updateUserAlert.addTextField { (addressField) in
-            addressField.placeholder = "Enter your address here..."
-            addressField.text = self.user.address
-            addressTextField = addressField
-        }
-        
-        updateUserAlert.addTextField { (phoneNumberField) in
-            phoneNumberField.placeholder = "Enter your phone number here..."
-            phoneNumberField.text = self.user.phoneNumber
-            phoneNumberTextField = phoneNumberField
-        }
-        
-        updateUserAlert.addTextField { (gateCodeField) in
-            gateCodeField.placeholder = "Enter your gate code here..."
-            gateCodeField.text = self.user.gateCode
-            gateCodeTextField = gateCodeField
-        }
-        
-        updateUserAlert.addTextField { (emailField) in
-            emailField.placeholder = "Enter your email here..."
-            emailField.text = self.user.email
-            emailTextField = emailField
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            guard let name = nameTextField?.text,
-                let address = addressTextField?.text,
-                let phoneNumber = phoneNumberTextField?.text,
-                let gateCode = gateCodeTextField?.text,
-                let email = emailTextField?.text else { return }
-            
-            self.user.name = name
-            self.user.address = address
-            self.user.phoneNumber = phoneNumber
-            self.user.gateCode = gateCode
-            self.user.email = email
-            
-            UserController.shared.patchUserToFirebase(user: self.user, completion: { (success) in
-            })
-        }
-        
-        updateUserAlert.addAction(cancelAction)
-        updateUserAlert.addAction(saveAction)
-        
-        present(updateUserAlert, animated: true, completion: nil)
-    }
-    
-    func createVehicleAlert() {
-        let createVehicleAlert = UIAlertController(title: "Add a vehicle below.", message: nil, preferredStyle: .alert)
-        
-        var yearTextField: UITextField?
-        var makeTextField: UITextField?
-        var modelTextField: UITextField?
-        var prefFuelTypeTextField: UITextField?
-        var prefOilTypeTextField: UITextField?
-        
-        createVehicleAlert.addTextField { (yearField) in
-            yearField.placeholder = "Enter your vehicles year..."
-            yearTextField = yearField
-        }
-        
-        createVehicleAlert.addTextField { (makeField) in
-            makeField.placeholder = "Enter your vehicles make..."
-            makeTextField = makeField
-        }
-        
-        createVehicleAlert.addTextField { (modelField) in
-            modelField.placeholder = "Enter your vehicles model..."
-            modelTextField = modelField
-        }
-        
-        createVehicleAlert.addTextField { (prefFuelField) in
-            prefFuelField.placeholder = "Enter your vehicles preffered fuel type..."
-            prefFuelTypeTextField = prefFuelField
-        }
-        
-        createVehicleAlert.addTextField { (prefOilField) in
-            prefOilField.placeholder = "Enter your vehicles preffered oil type..."
-            prefOilTypeTextField = prefOilField
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            guard let year = yearTextField?.text, year != "",
-                let make = makeTextField?.text, make != "",
-                let model = modelTextField?.text, model != "",
-                let prefFuelType = prefFuelTypeTextField?.text,
-                let prefOilType = prefOilTypeTextField?.text else { return }
-            let vehicleUUID = UUID().uuidString
-            
-            VehicleController.shared.createVehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID)
-            let vehicle = VehicleController.shared.vehicle
-            VehicleController.shared.putVehicleToFirebase(vehicle: vehicle, completion: { (success) in
-            })
-            self.tableView.reloadData()
-        }
-        
-        createVehicleAlert.addAction(cancelAction)
-        createVehicleAlert.addAction(saveAction)
-        
-        present(createVehicleAlert, animated: true, completion: nil)
-    }
-    
-    func updateVehicleAlert(vehicle: Vehicle) {
-        let updateVehicleAlert = UIAlertController(title: "Vehicle Info", message: nil, preferredStyle: .alert)
-        
-        var yearTextField: UITextField?
-        var makeTextField: UITextField?
-        var modelTextField: UITextField?
-        var prefFuelTypeTextField: UITextField?
-        var prefOilTypeTextField: UITextField?
-        
-        updateVehicleAlert.addTextField { (yearField) in
-            yearField.placeholder = "Enter your vehicles year..."
-            yearField.text = vehicle.year
-            yearTextField = yearField
-        }
-        
-        updateVehicleAlert.addTextField { (makeField) in
-            makeField.placeholder = "Enter your vehicles make..."
-            makeField.text = vehicle.make
-            makeTextField = makeField
-        }
-        
-        updateVehicleAlert.addTextField { (modelField) in
-            modelField.placeholder = "Enter your vehicles model..."
-            modelField.text = vehicle.model
-            modelTextField = modelField
-        }
-        
-        updateVehicleAlert.addTextField { (prefFuelField) in
-            prefFuelField.placeholder = "Enter your vehicles preffered fuel type..."
-            prefFuelField.text = vehicle.prefFuelType
-            prefFuelTypeTextField = prefFuelField
-        }
-        
-        updateVehicleAlert.addTextField { (prefOilField) in
-            prefOilField.placeholder = "Enter your vehicles preffered oil type..."
-            prefOilField.text = vehicle.prefOilType
-            prefOilTypeTextField = prefOilField
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let saveAction = UIAlertAction(title: "Save", style: .default) { (_) in
-            guard let year = yearTextField?.text, year != "",
-                let make = makeTextField?.text, make != "",
-                let model = modelTextField?.text, model != "",
-                let prefFuelType = prefFuelTypeTextField?.text,
-                let prefOilType = prefOilTypeTextField?.text else { return }
-            let vehicleUUID = vehicle.vehicleUUID
-            
-            VehicleController.shared.updateVehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID)
-            let vehicle = VehicleController.shared.vehicle
-            VehicleController.shared.patchVehicleToFirebase(vehicle: vehicle, completion: { (success) in
-            })
-            VehicleController.shared.fetchVehiclesFromFirebase(completion: {
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            })
-        }
-        
-        let orderServicesAction = UIAlertAction(title: "Order Services", style: .default) { (_) in
-            guard let year = yearTextField?.text, year != "",
-                let make = makeTextField?.text, make != "",
-                let model = modelTextField?.text, model != "",
-                let prefFuelType = prefFuelTypeTextField?.text,
-                let prefOilType = prefOilTypeTextField?.text else { return }
-            let vehicleUUID = vehicle.vehicleUUID
-            
-            VehicleController.shared.updateVehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID)
-            let vehicle = VehicleController.shared.vehicle
-            VehicleController.shared.patchVehicleToFirebase(vehicle: vehicle, completion: { (success) in
-            })
-            self.performSegue(withIdentifier: "ToServiceView", sender: self)
-        }
-        
-        updateVehicleAlert.addAction(cancelAction)
-        updateVehicleAlert.addAction(saveAction)
-        updateVehicleAlert.addAction(orderServicesAction)
-        
-        present(updateVehicleAlert, animated: true, completion: nil)
     }
 }
