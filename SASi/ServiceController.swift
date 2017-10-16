@@ -29,7 +29,7 @@ class ServiceController {
     func fetchServicesFromFirebase(completion: @escaping() -> Void) {
         
         guard let baseURL = baseURL else { completion(); return }
-        let url = baseURL.appendingPathComponent("users").appendingPathComponent("services").appendingPathExtension("json")
+        let url = baseURL.appendingPathComponent("services").appendingPathExtension("json")
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

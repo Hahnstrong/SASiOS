@@ -21,6 +21,8 @@ class VehicleInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var vehicleModelTextField: UITextField!
     @IBOutlet weak var vehiclePrefFuelTypeTextField: UITextField!
     @IBOutlet weak var vehiclePrefOilTypeTextField: UITextField!
+    @IBOutlet weak var orderServicesForThisVehicleButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
     
     // MARK: - IBActions
     
@@ -60,26 +62,25 @@ class VehicleInfoViewController: UIViewController, UITextFieldDelegate {
         
         if vehicle != nil {
             VehicleController.shared.updateVehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID!)
-            
-            self.navigationController?.popViewController(animated: true)
         } else {
             vehicleUUID = UUID().uuidString
             
             VehicleController.shared.createVehicle(year: year, make: make, model: model, prefFuelType: prefFuelType, prefOilType: prefOilType, vehicleUUID: vehicleUUID!)
-            
-            self.navigationController?.popViewController(animated: true)
         }
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Text Field Delegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        vehicleYearTextField.resignFirstResponder()
-        vehicleMakeTextField.resignFirstResponder()
-        vehicleModelTextField.resignFirstResponder()
-        vehiclePrefFuelTypeTextField.resignFirstResponder()
-        vehiclePrefOilTypeTextField.resignFirstResponder()
-        return true
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
+        return false
     }
     
     // MARK: - View Loading Functions
@@ -88,10 +89,15 @@ class VehicleInfoViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         vehicleYearTextField.delegate = self
+        vehicleYearTextField.tag = 0
         vehicleMakeTextField.delegate = self
+        vehicleMakeTextField.tag = 1
         vehicleModelTextField.delegate = self
+        vehicleModelTextField.tag = 2
         vehiclePrefFuelTypeTextField.delegate = self
+        vehiclePrefFuelTypeTextField.tag = 3
         vehiclePrefOilTypeTextField.delegate = self
+        vehiclePrefOilTypeTextField.tag = 4
         
         if vehicle != nil {
             vehicleYearTextField.text = vehicle?.year
@@ -106,11 +112,14 @@ class VehicleInfoViewController: UIViewController, UITextFieldDelegate {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: "background")
         self.view.insertSubview(backgroundImage, at: 0)
+        
+        orderServicesForThisVehicleButton.layer.cornerRadius = 8
+        saveButton.layer.cornerRadius = 8
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ToServiceView" {
-            if let destinationViewController = segue.destination as? ServiceListTableViewController {
+            if let destinationViewController = segue.destination as? ServiceOrderViewController {
                 let vehicle = VehicleController.shared.vehicle
                 destinationViewController.vehicle = vehicle
             }

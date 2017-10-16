@@ -11,5 +11,6 @@ target 'SASi' do
 	pod 'Firebase/Auth'
 	pod 'Firebase/Database'
 	pod 'GoogleSignIn'
+	pod 'IQKeyboardManagerSwift'
 
 end
