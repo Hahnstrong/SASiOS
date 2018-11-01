@@ -22,14 +22,14 @@ class UserController {
     
     func createUserWithEmail() {
         guard let email = Auth.auth().currentUser?.email else { return }
-        user = User(name: "", address: "", phoneNumber: "", email: email, gateCode: "")
+        user = User(name: "", address: "", phoneNumber: "", email: email, gateCode: "", userID: userID)
         putUserToFirebase(user: user) { (success) in
         }
     }
     
     func createUserWithPhone() {
         guard let phoneNumber = Auth.auth().currentUser?.phoneNumber else { return }
-        user = User(name: "", address: "", phoneNumber: phoneNumber, email: "", gateCode: "")
+        user = User(name: "", address: "", phoneNumber: phoneNumber, email: "", gateCode: "", userID: userID)
         putUserToFirebase(user: user) { (success) in
         }
     }
